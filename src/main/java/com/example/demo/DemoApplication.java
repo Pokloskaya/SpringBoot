@@ -1,44 +1,49 @@
 package com.example.demo;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-//------
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Profile;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
-import org.springframework.web.client.RestTemplate;
-//------
 
-@RestController //Steoreotype for RESTful controller
+import com.example.demo.storage.StorageProperties;
+import com.example.demo.storage.StorageService;
+
+import com.example.demo.consumingRestfulWebService.Quote;
+
+//----------------
 @SpringBootApplication //meta annotation often placed on your main class (main class also know as configuration class)
 //@EnableAutoConfiguration tells Spring Boot how you want to configure Spring, based on the jar dependencies.
 
+@EnableConfigurationProperties(StorageProperties.class)
+
 public class DemoApplication {
 
-  private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
+  	private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
 
+  	public static void main(String[] args) {
+    	SpringApplication.run(DemoApplication.class, args);
+  	}
 
-  @RequestMapping("/") 
-  String home() {
-    return "Esto es del primer tutorial de Spring Boot. Pero ya hice el segundo, wii";
-  }
-  public static void main(String[] args) {
-    SpringApplication.run(DemoApplication.class, args);
-  }
+  	@Bean
+    CommandLineRunner init(StorageService storageService) {
+	return (args) -> {
+		storageService.deleteAll();
+		storageService.init();
+	  };
+  	}
 
-  @Bean
+  	@Bean
 	public RestTemplate restTemplate(RestTemplateBuilder builder) {
 		return builder.build();
 	}
 
-  @Bean
+  	@Bean
 	@Profile("!test")
 	public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
 		return args -> {

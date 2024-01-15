@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.buildRestfulWebService;
 
 import java.util.concurrent.atomic.AtomicLong;
 
