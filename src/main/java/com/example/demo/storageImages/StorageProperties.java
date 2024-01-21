@@ -1,4 +1,4 @@
-package com.example.demo.storage;
+package com.example.demo.storageImages;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -8,7 +8,7 @@ public class StorageProperties {
 	/**
 	 * Folder location for storing files
 	 */
-	private String location = "upload-dir";
+	private String location = "src/main/resources/uploadedImages";
 
 	public String getLocation() {
 		return location;

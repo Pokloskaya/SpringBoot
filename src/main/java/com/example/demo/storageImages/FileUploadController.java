@@ -1,4 +1,4 @@
-package com.example.demo.storage;
+package com.example.demo.storageImages;
 
 import java.io.IOException;
 import java.util.stream.Collectors;
